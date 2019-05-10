@@ -1,3 +1,7 @@
+# About this fork
+Just removed serialization and the need of cereal (easier to use this code in some cases).
+Might add compile flags if serialization is wanted, or serialize with Boost::serialize.
+
 # BooM
 A hash map using the [BBHash](https://github.com/rizkg/BBHash) perfect hash function.
 

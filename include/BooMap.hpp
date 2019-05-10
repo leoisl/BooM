@@ -3,10 +3,6 @@
 
 #include "BooPHF.hpp"
 
-#include "cereal/types/vector.hpp"
-#include "cereal/types/utility.hpp"
-#include "cereal/archives/binary.hpp"
-
 #include <fstream>
 #include <vector>
 #include <iterator>
@@ -93,68 +89,6 @@ public:
     inline IteratorT end() { return data_.end(); }
     inline IteratorT cend() const { return data_.cend(); }
     inline IteratorT cbegin() const { return data_.cbegin(); }
-    
-    void save(const std::string& ofileBase) {
-        if (built_) {
-            std::string hashFN = ofileBase + ".bph";
-            // save the perfect hash function
-            {
-                std::ofstream os(hashFN, std::ios::binary);
-                if (!os.is_open()) {
-                    std::cerr << "BooM: unable to open output file [" << hashFN << "]; exiting!\n";
-                    std::exit(1);
-                }
-                boophf_->save(os);
-                os.close();
-            }
-            // and the values
-            std::string dataFN = ofileBase + ".val";
-            {
-                std::ofstream valStream(dataFN, std::ios::binary);
-                if (!valStream.is_open()) {
-                    std::cerr << "BooM: unable to open output file [" << dataFN << "]; exiting!\n";
-                    std::exit(1);
-                }
-                {
-                    cereal::BinaryOutputArchive outArchive(valStream);
-                    outArchive(data_);
-                }
-                valStream.close();
-            }
-        }
-    }
-    
-    void load(const std::string& ofileBase) {
-        std::string hashFN = ofileBase + ".bph";
-        std::string dataFN = ofileBase + ".val";
-
-        if ( !FileExists_(hashFN.c_str()) ) {
-            std::cerr << "BooM: Looking for perfect hash function file [" << hashFN << "], which doesn't exist! exiting.\n";
-            std::exit(1);
-        }
-        if ( !FileExists_(dataFN.c_str()) ) {
-            std::cerr << "BooM: Looking for key-value file [" << dataFN << "], which doesn't exist! exiting.\n";
-            std::exit(1);
-        }
-
-        // load the perfect hash function
-        {
-            boophf_.reset(new BooPHFT);
-            std::ifstream is(hashFN, std::ios::binary);
-            boophf_->load(is);
-            is.close();
-        }
-        // and the values
-        {
-            std::ifstream dataStream(dataFN, std::ios::binary);
-            {
-                cereal::BinaryInputArchive inArchive(dataStream);
-                inArchive(data_);
-            }
-            dataStream.close();
-        }
-        built_ = true;
-    }
 
 private:
     // Taken from http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c

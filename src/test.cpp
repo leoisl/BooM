@@ -86,16 +86,4 @@ int main() {
     }
     std::vector<size_t> absentKeys(absentKeySet.begin(), absentKeySet.end());
     testQuery(map, verifyMap, absentKeys);
-
-    // Testing saving
-    std::cerr << "testing save to disk ... ";
-    map.save("boom_hash");
-    std::cerr << "done\n";
-    
-    // Testing loading
-    std::cerr << "testing loading from disk ... ";
-    BooMap<uint64_t, uint64_t> lmap;
-    lmap.load("boom_hash");
-    std::cerr << "done\n";
-    testQuery(lmap, verifyMap, absentKeys);
 }

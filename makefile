@@ -1,6 +1,6 @@
 # CC=/usr/bin/g++
 CC=g++
-CFLAGS = -O3 -std=c++11 -lpthread -flto -march=native -I include
+CFLAGS = -O3 -std=c++11 -lpthread -flto -I include
 LDFLAGS=-flto
 EXEC=test
 all: $(EXEC)
