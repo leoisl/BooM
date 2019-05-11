@@ -1,7 +1,7 @@
 #ifndef __BOO_MAP__
 #define __BOO_MAP__
 
-#include "BooPHF.hpp"
+#include <gatb/gatb_core.hpp>
 
 #include <fstream>
 #include <vector>
@@ -45,6 +45,9 @@ public:
 
     BooMap() : built_(false) {}
     void add(KeyT&& k, ValueT&& v) {
+        data_.emplace_back(k, v);
+    }
+    void add(const KeyT& k, const ValueT& v) {
         data_.emplace_back(k, v);
     }
 
